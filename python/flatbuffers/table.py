@@ -101,7 +101,7 @@ class Table(object):
             return d
         return self.Get(validator_flags, self.Pos + off)
 
-    def GetVectorAsNumpy(self, flags, off):
+    def GetVectorAsNumpy(self, flags, off, length_ref=None):
         """
         GetVectorAsNumpy returns the vector that starts at `Vector(off)`
         as a numpy array with the type specified by `flags`. The array is
@@ -109,7 +109,7 @@ class Table(object):
         modify Bytes in place.
         """
         offset = self.Vector(off)
-        length = self.VectorLen(off) # TODO: length accounts for bytewidth, right?
+        length = self.VectorLen(off) if length_ref is None else length_ref # TODO: length accounts for bytewidth, right? #E.M. fast fix, int32 wrong length
         numpy_dtype = N.to_numpy_type(flags)
         return encode.GetVectorAsNumpy(numpy_dtype, self.Bytes, length, offset)
 
